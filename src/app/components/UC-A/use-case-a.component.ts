@@ -4,7 +4,7 @@
  */
 import { JsonPipe } from '@angular/common';
 import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog, MatDialogClose } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { Subscription } from 'rxjs';
@@ -34,6 +34,7 @@ export class UseCaseAComponent implements OnInit, AfterViewInit {
 
   sseSubscription: Subscription;
   sseSubscriptionEvent: any;
+  processingTask: Number;
 
   constructor(private sseService: SseService, private UCCService: UCCService, public dialog: MatDialog) {
     this.dataSource = new MatTableDataSource<TaskFieldOperator>()
@@ -97,6 +98,7 @@ export class UseCaseAComponent implements OnInit, AfterViewInit {
 
         if (taskId) {
 
+          this.processingTask = taskId
           const dialogRef = this.dialog.open(NotificationFieldOperatorComponent, {
             disableClose: true,
             width: 'auto',
@@ -108,6 +110,29 @@ export class UseCaseAComponent implements OnInit, AfterViewInit {
               taskId: taskId,
               error: true
             }
+          })
+          dialogRef.afterClosed().subscribe(data => {
+              if(data == true){
+                //operator selected "OK"
+                for(let t of this.dataSource.data){
+                  if(Number(t.status) == 5)
+                    t.status = "2";
+                    break
+                }
+                for(let t of this.dataSource.data){
+                  if(t.status != "2"){
+                    t.status = "5"
+                    break
+                  }
+                }
+              }
+              else{
+                //operator selected "NOT OK"
+                console.log("Received false");
+
+                //update icon
+                
+              }
           })
 
         }
@@ -133,26 +158,27 @@ export class UseCaseAComponent implements OnInit, AfterViewInit {
   }
 
   checkIfMustBeShownNotification(taskId: number, data: any) {
-    for (let taskOper of this.taskOperList) {
-      console.log(taskOper)
-      if (taskOper.task_id == taskId + 1) {
-
-
-        //Se il task dell'operatore è il successivo rispetto a quello effettuato da AGV
-        // ==> mostro notifica
-        const dialogRef = this.dialog.open(NotificationFieldOperatorComponent, {
-          disableClose: true,
-          width: 'auto',
-          height: 'auto',
-          data: {
-            workAreaId: data.area_id,
-            taskId: data.task_id +1,
-            error: false
-          }
-        })
-        break;
+    if(this.processingTask!=taskId){
+      for (let taskOper of this.taskOperList) {
+        console.log(taskOper)
+        if (taskOper.task_id == taskId + 1) {
+          //Se il task dell'operatore è il successivo rispetto a quello effettuato da AGV
+          // ==> mostro notifica
+          const dialogRef = this.dialog.open(NotificationFieldOperatorComponent, {
+            disableClose: true,
+            width: 'auto',
+            height: 'auto',
+            data: {
+              workAreaId: data.area_id,
+              taskId: data.task_id +1,
+              error: false
+            }
+          })
+          break;
+        }
       }
     }
+    
   }
 
 

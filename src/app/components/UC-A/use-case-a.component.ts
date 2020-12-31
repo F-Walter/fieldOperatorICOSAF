@@ -2,6 +2,7 @@
  * Component not used in this context, but added for managing the activity of the shop floor operator.
  * Nevertheless is only a mock definition because no functionality was implemented
  */
+import { JsonPipe } from '@angular/common';
 import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
@@ -79,12 +80,20 @@ export class UseCaseAComponent implements OnInit, AfterViewInit {
      */
     this.sseSubscription = !this.sseSubscription ? this.sseService
       .getServerSentEvent("http://localhost:4200/API/solve_action")
-      .subscribe(data => {
+      .subscribe(data => {        
 
-        let cobotName: string = data.cobot_name
-        let typeofError: string = data.solve_act_descr
-        let severity: string = data.severity == 1 ? "Alta" : "Bassa"
-        let taskId: Number = data.task_id
+        let res = JSON.parse(data.data)        
+
+        console.log(res);
+        
+
+        let cobotName: string = res.cobot_name
+        let typeofError: string = res.solve_action_desc
+        let severity: string = res.severity == 1 ? "Alta" : "Bassa"
+        let taskId: Number = Number(res.task_id)
+
+        
+        console.log("taskId: " + taskId)
 
         if (taskId) {
 
@@ -114,7 +123,8 @@ export class UseCaseAComponent implements OnInit, AfterViewInit {
         //console.log(response)
         let data = JSON.parse(response.data)
         console.log("DATA", data)
-        this.checkIfMustBeShownNotification(Number(data.task_id), data)
+        if(data.status == "OK")
+          this.checkIfMustBeShownNotification(Number(data.task_id), data)
       }) : null
   }
 

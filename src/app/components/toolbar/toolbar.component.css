@@ -1,0 +1,38 @@
+img {
+  height: 50px;
+  background-color: white;
+}
+
+.example-fill-remaining-space {
+  /* This fills the remaining space, by using flexbox. 
+       Every toolbar row uses a flexbox row layout. */
+  flex: 1 1 auto;
+}
+
+mat-icon {
+  margin-left: 0px;
+  margin-right: 25px;
+}
+
+#email {
+  font-size: medium;
+  margin-right: 20px;
+}
+
+mat-toolbar {
+  background-color: #2c303b;
+  position: relative;
+  z-index: 4;
+}
+.mat-divider-vertical {
+  border-right-color: white;
+  margin-left: 1.5%;
+  margin-right: 1.5%;
+  height: 100%;
+  width: 0px !important;
+  position: inherit !important;
+}
+p {
+  font-size: medium;
+  color: white;
+}

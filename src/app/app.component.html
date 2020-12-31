@@ -1,0 +1,75 @@
+<app-toolbar>
+</app-toolbar>
+
+<mat-sidenav-container class="example-container">
+
+    <mat-sidenav mode="side" opened="true">
+
+        <mat-selection-list #iconList id="iconList" [multiple]="false" (selectionChange)="onSelect(iconList)">
+
+            <mat-list-option #dashboardIcon value="dashboard-icon" (click)="navigateTo('Home')">
+                <div *ngIf="dashboardIcon.selected === true; then dashboardSelectedBlock else dashboardBlock"></div>
+                <ng-template #dashboardSelectedBlock>
+                    <mat-icon svgIcon="dashboard-icon-selected" aria-hidden="false"
+                        aria-label="Example of dashboard SVG icon selected"></mat-icon>
+                </ng-template>
+                <ng-template #dashboardBlock>
+                    <!-- <mat-icon aria-hidden="false" aria-label="Example home icon">home</mat-icon> -->
+                    <mat-icon svgIcon="dashboard-icon" aria-hidden="false" aria-label="Example of dashboard SVG icon">
+                    </mat-icon>
+                </ng-template>
+            </mat-list-option>
+
+            <mat-divider></mat-divider>
+
+            <mat-list-option #settingIcon value="setting-icon">
+
+                <div *ngIf="settingIcon.selected === true; then settingSelectedBlock else settingBlock"></div>
+                <ng-template #settingSelectedBlock>
+                    <mat-icon svgIcon="setting-icon-selected" aria-hidden="false"
+                        aria-label="Example of setting SVG icon">
+                    </mat-icon>
+                </ng-template>
+
+                <ng-template #settingBlock>
+                    <mat-icon svgIcon="setting-icon" aria-hidden="false" aria-label="Example of setting SVG icon">
+                    </mat-icon>
+                </ng-template>
+
+            </mat-list-option>
+
+            <mat-divider></mat-divider>
+
+        </mat-selection-list>
+
+        <span id="verticalFiller"></span>
+
+
+        <mat-selection-list #logList id="logList" [multiple]="false" (selectionChange)="onSelect(logList)">
+            <mat-divider></mat-divider>
+            <mat-list-option #logIcon value="login-icon">
+
+                <div *ngIf="isLoggedIconSelected(); then logged else unlogged"></div>
+                <ng-template #logged>
+                    <div id="logIcon" value="login-icon-selected">
+                        <mat-icon svgIcon="login-icon-selected" aria-hidden="false"
+                            aria-label="Example of logged SVG icon"(click)="navigateTo('Login')" ></mat-icon>
+                    </div>
+                </ng-template>
+                <ng-template #unlogged>
+                    <div id="logIcon" value="login-icon">
+                        <mat-icon svgIcon="login-icon" aria-hidden="false" aria-label="Example of logged SVG icon" (click)="navigateTo('Login')">
+                        </mat-icon>
+                    </div>
+                </ng-template>
+            </mat-list-option>
+            <mat-divider></mat-divider>
+        </mat-selection-list>
+
+    </mat-sidenav>
+
+    <mat-sidenav-content>
+        <router-outlet></router-outlet>
+    </mat-sidenav-content>
+
+</mat-sidenav-container>

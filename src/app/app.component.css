@@ -1,0 +1,53 @@
+mat-sidenav {
+    /* --unnamed-color-2c303b: #2C303B; */
+    background-color: #2c303b;
+    width: 4.5%;
+    position: fixed;
+}
+mat-selection-list{
+    width: 99%;
+    margin-top: 92%;
+}
+
+mat-list-option[aria-selected="true"] {
+    background: white;
+}
+
+mat-list-option {
+    display: flex!important;
+    justify-content: center!important;
+}
+
+:host /deep/ .mat-list-text {
+    padding: 0!important;
+}
+
+.mat-divider {
+    border-top-color: white;
+}
+
+.mat-list-base {
+    padding-top: 0px;
+}
+
+
+#dividerLog {
+    /* position: relative;
+    width: 99%; */
+}
+
+#verticalFiller {
+    display: flex;
+    height: 68%;
+    width: auto;
+}
+
+mat-sidenav-content {
+    height: 100%;
+    min-height: 95vh;
+}
+#logIcon{
+    width: 100%;
+    display: flex;
+}
+

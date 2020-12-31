@@ -1,0 +1,42 @@
+@import '~@angular/material/theming';
+@include mat-core();
+
+
+$custom-collection: (
+    warning :  #FFC116,
+    success :  #2dce1ff1,
+    looping: #FFC116,
+    danger:    #c00000,
+    inactive: #949494,
+    black: black,
+    darkBlue: #2c303b,
+    contrast: (
+        warning :  #000000,
+        success :  #FFFFFF,
+        danger:    #FFFFFF,
+    )
+);
+
+
+$my-app-theme: mat-light-theme(mat-palette($mat-indigo), mat-palette($mat-pink, A200, A100, A400),  mat-palette($mat-red));
+
+
+
+$my-app-custom: mat-palette($custom-collection, custom);
+$my-app-theme: map_merge($my-app-theme, (custom: $my-app-custom));
+$custom: map-get($my-app-theme, custom);
+
+
+
+.mat-success {
+    color: mat-color($custom, success);
+}
+.mat-looping {
+    color: mat-color($custom, looping);
+}
+.mat-inactive {
+    color: mat-color($custom, inactive);
+}
+
+@include angular-material-theme($my-app-theme);
+

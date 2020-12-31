@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="19" height="20" viewBox="0 0 19 20">
+    <defs>
+        <style>.bell-icon-a{fill:#fff;}.bell-icon-b{clip-path:url(#bell-icon);}.bell-icon-c{fill:#c25127;stroke:#2c303b;stroke-miterlimit:10;}.bell-icon-d{stroke:none;}.e{fill:none;}</style>
+        <clipPath id="bell-icon">
+            <rect class="bell-icon-a" width="19" height="20" transform="translate(16.5 15.5)" />
+        </clipPath>
+    </defs>
+    <g class="bell-icon-b" transform="translate(-16.5 -15.5)">
+        <g transform="translate(17.333 17.343)">
+            <path class="bell-icon-a" d="M16.283,12.322l-.066-.05a5.464,5.464,0,0,1-1.873-4.127V5.893A5.678,5.678,0,0,0,2.988,5.777V8.154a5.48,5.48,0,0,1-1.874,4.127l-.066.041A1.42,1.42,0,0,0,1.972,14.8H5.7a3.045,3.045,0,0,0,5.934,0h3.722a1.42,1.42,0,0,0,.924-2.476Z" />
+            <g class="bell-icon-c" transform="translate(10.861 -0.587)">
+                <circle class="bell-icon-d" cx="2.889" cy="2.889" r="2.889" />
+                <circle class="bell-icon-e" cx="2.889" cy="2.889" r="3.389" />
+            </g>
+        </g>
+    </g>
+</svg>

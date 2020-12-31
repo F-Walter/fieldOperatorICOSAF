@@ -1,0 +1,44 @@
+
+<h1> Current task: {{ currentTask }} </h1>
+
+<div class="mat-elevation-z8 tableCentered">
+    <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+
+        <!--- Note that these columns can be defined in any order.
+              The actual rendered columns are set as a property on the row definition" -->
+
+        <!-- Position Column -->
+        <ng-container matColumnDef="status">
+            <th mat-header-cell *matHeaderCellDef> Stato </th>
+            <td mat-cell *matCellDef="let element">
+                <div [ngSwitch]="element.status">
+                    <!-- 0: ok or problem solved, 1: warning , 2: not yet considered, 3: loading-->
+
+                    <mat-icon *ngSwitchCase="2" aria-hidden="false" aria-label="Example home icon" color="success">
+                        check_circle
+                    </mat-icon>
+                    <mat-icon *ngSwitchCase="1" aria-hidden="false" aria-label="Example home icon" color="inactive">
+                        cancel
+                    </mat-icon>
+                    <mat-icon *ngSwitchCase="5" aria-hidden="false" aria-label="Example home icon" color="looping">
+                        loop
+                    </mat-icon>
+                    <mat-icon *ngSwitchCase="4" svgIcon="error-solved" aria-hidden="false"></mat-icon>
+                    <div *ngSwitchDefault>
+                    </div>
+                </div>
+            </td>
+        </ng-container>
+
+        <!-- Name Column -->
+        <ng-container matColumnDef="det_short_id">
+            <th mat-header-cell *matHeaderCellDef> Id pezzo </th>
+            <td mat-cell *matCellDef="let element"> {{element.det_short_id}} </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+
+    <mat-paginator [pageSizeOptions]="[5, 10, 20]"></mat-paginator>
+</div>

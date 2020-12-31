@@ -1,0 +1,50 @@
+.actions {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#modal {
+    border-color: #c25127;
+    border-width: 5px;
+    border-style: solid;
+}
+
+.orangeText {
+    color: #C25127;
+}
+
+h1 {
+    text-align: center;
+}
+
+.greyText {
+    color: #828693;
+    font-size: 12px;
+}
+
+.darkBlueColor {
+    background-color: #454C5E;
+    color: white;
+}
+
+.whiteButton {
+    border-width: 1px;
+    border-color: #454C5E;
+    color: #454C5E;
+    border-style: solid;
+}
+button{
+    border-radius: 0;
+    min-width: 200px;
+}
+
+div{
+    margin-bottom: 25px;
+}
+
+.errorText{
+    font-size: 14px;
+    font-family: 'Roboto';
+    font-weight: 'Regular';
+}

@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="21" height="21" viewBox="0 0 21 21">
+    <defs>
+        <style>.logout-a{fill:#fff;}.logout-b{clip-path:url(#logout-a);}.logout-c,.logout-d{fill:none;stroke:#fff;stroke-linecap:round;stroke-linejoin:round;}.logout-c{stroke-width:1.721px;}.logout-d{stroke-width:1.944px;}</style>
+        <clipPath id="logout-a">
+            <rect class="logout-a" width="21" height="21" transform="translate(13.5 15.5)" />
+        </clipPath>
+    </defs>
+    <g class="logout-b" transform="translate(-13.5 -15.5)">
+        <g transform="translate(16.911 16.967)">
+            <line class="logout-c" x2="8.19" transform="translate(1.295 9.481)" />
+            <path class="logout-c" d="M5.9,6.926,1.463,9.481,5.9,12.045" transform="translate(-2)" />
+            <path class="logout-d" d="M7.881,3.441V1.506H16.6V16.561H7.881V14.626" />
+        </g>
+    </g>
+</svg>

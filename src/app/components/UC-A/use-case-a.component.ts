@@ -47,6 +47,8 @@ export class UseCaseAComponent implements OnInit, AfterViewInit {
     this.UCCService.getTaskListOper(2, 2).subscribe((response: any[]) => {
 
       this.taskOperList = response
+      console.log("PIPPO:" ,this.taskOperList);
+      
 
       if (response.length != 0) {
         this.currentTask = response[0].task_descr.toString()
@@ -62,7 +64,12 @@ export class UseCaseAComponent implements OnInit, AfterViewInit {
       })
 
       // Il primo elemento nella lista deve avere loop giallo
-      tasks[0].status = 5
+      for(let t of tasks){
+        if(t.status != 2){
+          t.status = 5
+          break
+        }
+      }
       this.dataSource.data = [...tasks]
     })
 
@@ -129,7 +136,7 @@ export class UseCaseAComponent implements OnInit, AfterViewInit {
           height: 'auto',
           data: {
             workAreaId: data.area_id,
-            taskId: data.task_id,
+            taskId: data.task_id +1,
             error: false
           }
         })

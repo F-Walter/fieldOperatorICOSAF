@@ -44,7 +44,7 @@ export class NotificationFieldOperatorComponent implements OnInit {
  */
   ok() {
     this.uccService.setTaskStatusOk(Number(this.taskId)).subscribe(_ => {
-      this.router.navigate(["FieldOperator"])
+      this.router.navigate(["Home"])
     })
 
   }
@@ -56,7 +56,7 @@ export class NotificationFieldOperatorComponent implements OnInit {
 
     //TODO per il momento è settato errorTypeId a 3 ma è da vedere quale valore inserire
     this.uccService.setTaskStatusNotOk(Number(this.taskId), 3).subscribe(_ => {
-      this.router.navigate(["FieldOperator"])
+      this.router.navigate(["Home"])
     })
 
   }

@@ -14,17 +14,21 @@
                 
                 <div [ngSwitch]="element.status">
                     <!-- 1: created, 2: success, 3: failed, 4: error solved 5: used to have a yellow loop icon -->
-
-                    <mat-icon *ngSwitchCase="2" aria-hidden="false" aria-label="Example home icon" color="success">
-                        check_circle
-                    </mat-icon>
                     <mat-icon *ngSwitchCase="1" aria-hidden="false" aria-label="Example home icon" color="inactive">
                         loop
                     </mat-icon>
+                    <mat-icon *ngSwitchCase="2" aria-hidden="false" aria-label="Example home icon" color="success">
+                        check_circle
+                    </mat-icon>
+
+                    <mat-icon *ngSwitchCase="3" svgIcon="error-icon" aria-hidden="false" aria-label="Example home icon">
+                    </mat-icon>
+                    
+                    <mat-icon *ngSwitchCase="4" svgIcon="error-solved" aria-hidden="false"></mat-icon>
+                    
                     <mat-icon *ngSwitchCase="5" aria-hidden="false" aria-label="Example home icon" color="looping">
                         loop
                     </mat-icon>
-                    <mat-icon *ngSwitchCase="4" svgIcon="error-solved" aria-hidden="false"></mat-icon>
                     <div *ngSwitchDefault>
                     </div>
                 </div>

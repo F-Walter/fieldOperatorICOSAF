@@ -46,11 +46,8 @@ export class NotificationFieldOperatorComponent implements OnInit {
  * Task effetuato con successo comunicare backend
  */
   ok() {
-    this.uccService.setTaskStatusOk(Number(this.taskId)).subscribe(_ => {
-      const result = { result: true}
+      const result = { result: true, task_id:this.taskId}
       this.dialogRef.close(result)
-    })
-
   }
 
   /**
@@ -60,7 +57,7 @@ export class NotificationFieldOperatorComponent implements OnInit {
 
     //TODO per il momento è settato errorTypeId a 3 ma è da vedere quale valore inserire
     this.uccService.setTaskStatusNotOk(Number(this.taskId), 3).subscribe(_ => {
-      const result = { result: false}
+      const result = { result: false, task_id:this.taskId}
       this.dialogRef.close(result)
         })
 

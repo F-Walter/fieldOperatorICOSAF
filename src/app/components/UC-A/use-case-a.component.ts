@@ -34,7 +34,6 @@ export class UseCaseAComponent implements OnInit, AfterViewInit {
 
   sseSubscription: Subscription;
   sseSubscriptionEvent: any;
-  processingTask: Number;
 
   constructor(private sseService: SseService, private UCCService: UCCService, public dialog: MatDialog) {
     this.dataSource = new MatTableDataSource<TaskFieldOperator>()
@@ -65,9 +64,9 @@ export class UseCaseAComponent implements OnInit, AfterViewInit {
         }
       })
 
-      // Il primo elemento nella lista deve avere loop giallo
+      // Il primo elemento nella lista che non è un errore deve avere loop giallo
       for(let t of tasks){
-        if(t.status != 2){
+        if(t.status != 2 && t.status != 3){
           t.status = 5
           break
         }
@@ -77,7 +76,7 @@ export class UseCaseAComponent implements OnInit, AfterViewInit {
 
 
     /**
-     * Subscription to the source of events
+     * Subscription to the source of events SOLVE ACTION in case of errors signalled by the remote operator
      */
     this.sseSubscription = !this.sseSubscription ? this.sseService
       .getServerSentEvent("http://localhost:4200/API/solve_action")
@@ -85,7 +84,7 @@ export class UseCaseAComponent implements OnInit, AfterViewInit {
 
         let res = JSON.parse(data.data)        
 
-        console.log(res);
+        console.log("DATA SU SOLVE_ACTION ",res);
         
 
         let cobotName: string = res.cobot_name
@@ -98,7 +97,6 @@ export class UseCaseAComponent implements OnInit, AfterViewInit {
 
         if (taskId) {
 
-          this.processingTask = taskId
 
           const dialogRef = this.dialog.open(NotificationFieldOperatorComponent, {
             disableClose: true,
@@ -112,9 +110,10 @@ export class UseCaseAComponent implements OnInit, AfterViewInit {
               error: true
             }
           })
-          this.onCloseFieldOperatorDialog(dialogRef)
+          this.onCloseFieldOperatorDialog(dialogRef,true)
         }
       }) : null
+
 
 
 
@@ -125,7 +124,7 @@ export class UseCaseAComponent implements OnInit, AfterViewInit {
         //TODO vedere cosa viene ricevuto e mandare a NOTIFICATION COMPONENT il mach det it
         //console.log(response)
         let data = JSON.parse(response.data)
-        console.log("DATA", data)
+        console.log("DATA su EVENTS", data)
         if(data.status == "OK")
           this.checkIfMustBeShownNotification(Number(data.task_id), data)
       }) : null
@@ -136,63 +135,95 @@ export class UseCaseAComponent implements OnInit, AfterViewInit {
   }
 
   checkIfMustBeShownNotification(taskId: number, data: any) {
-    if(this.processingTask!=taskId){
       for (let taskOper of this.taskOperList) {
         console.log(taskOper)
+
+        //Se il task dell'operatore è il successivo rispetto a quello effettuato da AGV
+        // ==> mostro notifica
         if (taskOper.task_id == taskId + 1) {
-          //Se il task dell'operatore è il successivo rispetto a quello effettuato da AGV
-          // ==> mostro notifica
           const dialogRef = this.dialog.open(NotificationFieldOperatorComponent, {
             disableClose: true,
             width: 'auto',
             height: 'auto',
             data: {
               workAreaId: data.area_id,
-              taskId: data.task_id +1,
+              taskId: taskOper.task_id,
               error: false
             }
           })
-          this.onCloseFieldOperatorDialog(dialogRef)
+          this.onCloseFieldOperatorDialog(dialogRef,false)
           break;
         }
+        else{
+          if(taskOper.task_id == taskId){
+            this.ngOnInit()
+          }
+        }
       }
-    }
+    
     
   }
 
 
-  onCloseFieldOperatorDialog(dialogRef){
+  onCloseFieldOperatorDialog(dialogRef,dialogClosedAfterError:boolean){
 
     dialogRef.afterClosed().subscribe(data => {
       console.log("data received: ",data);
-
+      console.log("dialogClosedAfterError ",dialogClosedAfterError);
+      
         if(data.result == true){
           //operator selected "OK"
           console.log("OPERATOR CLICKED OK");
-          
+
+          this.UCCService.setTaskStatusOk(Number(data.task_id)).subscribe(_ => {
+
+            // Se il dialog è stato chiuso a fronte di un errore per agv allora dialogClosedAfterError è true
+            // Se true non è necessario fare nulla perchè hai risolto un errore di agv e non devi fare nulla
+            if(!dialogClosedAfterError){
+
+            let newDataSource = []
+
+            for(let t of this.dataSource.data){
+              // Il primo task da fare per operatore è stato effettuato
+              if(Number(t.status) == 5 || Number(t.status) == 3)
+                t.status = "2";
+            }
+            for(let t of this.dataSource.data){
+              // Aggiornare la view mettendo il primo task operatore non esegito a 5
+              if(t.status != "2"){
+                t.status = "5"
+              }
+              newDataSource.push(t)
+            }
+            this.dataSource.data = [...newDataSource]
+            console.log("newDatasource",newDataSource);
+            console.log(this.dataSource.data);
+            }
+         
+          })
+        }
+        else{
+          //operator selected "NOT OK"
+          console.log("Received false");
+
+
+          if(!dialogClosedAfterError){
           let newDataSource = []
 
           for(let t of this.dataSource.data){
-            // Il primo task da fare per operatore è stato effettuato
+            // Il primo task da fare per operatore va aggiornato con errore
             if(Number(t.status) == 5)
-              t.status = "2";
-          }
-          for(let t of this.dataSource.data){
-            // Aggiornare la view mettendo il primo task operatore non esegito a 5
-            if(t.status != "2"){
-              t.status = "5"
-            }
+              t.status = "3";
+            
             newDataSource.push(t)
+
           }
           this.dataSource.data = [...newDataSource]
           console.log("newDatasource",newDataSource);
           console.log(this.dataSource.data);
         }
-        else{
-          //operator selected "NOT OK"
-          console.log("Received false");
-          //update icon
-        }
+      }
+         
     })
 
   }

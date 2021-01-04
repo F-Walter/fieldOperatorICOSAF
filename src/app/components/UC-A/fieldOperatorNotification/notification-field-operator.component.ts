@@ -19,6 +19,7 @@ export class NotificationFieldOperatorComponent implements OnInit {
 
 
   workAreaId: any;
+  task_descr: any;
 
 
   constructor(
@@ -33,7 +34,7 @@ export class NotificationFieldOperatorComponent implements OnInit {
       this.typeofError = data.typeofError ? data.typeofError : ""
       this.severity = data.severity ? data.severity : ""
     } else {
-      this.workAreaId = data.workAreaId ? data.workAreaId : null
+      this.task_descr = data.task_descr ? data.task_descr : null
     }
     this.taskId = data.taskId ? data.taskId : null
 

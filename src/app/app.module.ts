@@ -28,6 +28,7 @@ import { NotificationFieldOperatorComponent } from './components/UC-A/fieldOpera
 import { RouterModule } from '@angular/router';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations'; 
 import { AppRoutingModule } from './app-routing.module';
+import { MoveNextOrderDialogComponent } from './components/UC-A/fieldOperatorMoveNextOrder/move-next-order-dialog.component';
 @NgModule({
   declarations: [
     LoginDialogComponent,
@@ -38,7 +39,8 @@ import { AppRoutingModule } from './app-routing.module';
     NotificationComponent,
     UseCaseAComponent,
     NotificationFieldOperatorComponent,
-    AppComponent
+    AppComponent,
+    MoveNextOrderDialogComponent
   ],
   imports: [
     BrowserModule,

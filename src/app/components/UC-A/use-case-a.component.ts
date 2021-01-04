@@ -4,7 +4,7 @@
  */
 import { JsonPipe } from '@angular/common';
 import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
-import { MatDialog, MatDialogClose } from '@angular/material/dialog';
+import { MatDialog, MatDialogClose, MatDialogRef } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { Subscription } from 'rxjs';
@@ -49,7 +49,7 @@ export class UseCaseAComponent implements OnInit, AfterViewInit {
     this.UCCService.getTaskListOper(2, 2).subscribe((response: any[]) => {
 
       this.taskOperList = response
-      console.log("PIPPO:" ,this.taskOperList);
+      console.log("TaskOperatorList:" ,this.taskOperList);
       
 
       if (response.length != 0) {
@@ -99,6 +99,7 @@ export class UseCaseAComponent implements OnInit, AfterViewInit {
         if (taskId) {
 
           this.processingTask = taskId
+
           const dialogRef = this.dialog.open(NotificationFieldOperatorComponent, {
             disableClose: true,
             width: 'auto',
@@ -111,30 +112,7 @@ export class UseCaseAComponent implements OnInit, AfterViewInit {
               error: true
             }
           })
-          dialogRef.afterClosed().subscribe(data => {
-              if(data == true){
-                //operator selected "OK"
-                for(let t of this.dataSource.data){
-                  if(Number(t.status) == 5)
-                    t.status = "2";
-                    break
-                }
-                for(let t of this.dataSource.data){
-                  if(t.status != "2"){
-                    t.status = "5"
-                    break
-                  }
-                }
-              }
-              else{
-                //operator selected "NOT OK"
-                console.log("Received false");
-
-                //update icon
-                
-              }
-          })
-
+          this.onCloseFieldOperatorDialog(dialogRef)
         }
       }) : null
 
@@ -174,11 +152,49 @@ export class UseCaseAComponent implements OnInit, AfterViewInit {
               error: false
             }
           })
+          this.onCloseFieldOperatorDialog(dialogRef)
           break;
         }
       }
     }
     
+  }
+
+
+  onCloseFieldOperatorDialog(dialogRef){
+
+    dialogRef.afterClosed().subscribe(data => {
+      console.log("data received: ",data);
+
+        if(data.result == true){
+          //operator selected "OK"
+          console.log("OPERATOR CLICKED OK");
+          
+          let newDataSource = []
+
+          for(let t of this.dataSource.data){
+            // Il primo task da fare per operatore è stato effettuato
+            if(Number(t.status) == 5)
+              t.status = "2";
+          }
+          for(let t of this.dataSource.data){
+            // Aggiornare la view mettendo il primo task operatore non esegito a 5
+            if(t.status != "2"){
+              t.status = "5"
+            }
+            newDataSource.push(t)
+          }
+          this.dataSource.data = [...newDataSource]
+          console.log("newDatasource",newDataSource);
+          console.log(this.dataSource.data);
+        }
+        else{
+          //operator selected "NOT OK"
+          console.log("Received false");
+          //update icon
+        }
+    })
+
   }
 
 

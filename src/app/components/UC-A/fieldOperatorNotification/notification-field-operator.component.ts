@@ -18,11 +18,14 @@ export class NotificationFieldOperatorComponent implements OnInit {
   error: boolean
 
 
-  public dialogRef: MatDialogRef<NotificationFieldOperatorComponent>
   workAreaId: any;
 
 
-  constructor(@Inject(MAT_DIALOG_DATA) public data, private uccService: UCCService, private router: Router) {
+  constructor(
+  @Inject(MAT_DIALOG_DATA) public data, 
+  public dialogRef: MatDialogRef<NotificationFieldOperatorComponent>,
+  private uccService: UCCService, 
+  private router: Router) {
     this.error = data.error
 
     if (this.error == true) {
@@ -44,7 +47,8 @@ export class NotificationFieldOperatorComponent implements OnInit {
  */
   ok() {
     this.uccService.setTaskStatusOk(Number(this.taskId)).subscribe(_ => {
-      this.router.navigate(["Home"])
+      const result = { result: true}
+      this.dialogRef.close(result)
     })
 
   }
@@ -56,8 +60,9 @@ export class NotificationFieldOperatorComponent implements OnInit {
 
     //TODO per il momento è settato errorTypeId a 3 ma è da vedere quale valore inserire
     this.uccService.setTaskStatusNotOk(Number(this.taskId), 3).subscribe(_ => {
-      this.router.navigate(["Home"])
-    })
+      const result = { result: false}
+      this.dialogRef.close(result)
+        })
 
   }
 

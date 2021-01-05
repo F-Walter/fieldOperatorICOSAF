@@ -11,6 +11,7 @@ import { Subscription } from 'rxjs';
 import { Order } from 'src/app/model/order.model';
 import { SseService } from 'src/app/services/SseService/sse-service.service';
 import { UCCService } from 'src/app/services/UC-C/uc-c-service.service';
+import { environment } from 'src/environments/environment';
 import { MoveNextOrderDialogComponent } from './fieldOperatorMoveNextOrder/move-next-order-dialog.component';
 import { NotificationFieldOperatorComponent } from './fieldOperatorNotification/notification-field-operator.component';
 
@@ -47,12 +48,11 @@ export class UseCaseAComponent implements OnInit, AfterViewInit {
 
   ngOnInit(): void {
 
-
-
     this.UCCService.getOrdListByDateAndUC("UC-A", "2020-07-24").subscribe((orders: Order[]) => {
 
       console.log("Orders of the day ", orders);
 
+      // Define the order to be executed
       for (let o of orders) {
         if (o.order_status_id == 1 || o.order_status_id == 2) {
           this.orderToBeExecuted = o
@@ -97,7 +97,7 @@ export class UseCaseAComponent implements OnInit, AfterViewInit {
      * Subscription to the source of events SOLVE ACTION in case of errors signalled by the remote operator
      */
     this.sseSubscription = !this.sseSubscription ? this.sseService
-      .getServerSentEvent("http://localhost:4200/API/solve_action")
+      .getServerSentEvent(`http://${environment.sseEventsHost}solve_action`)
       .subscribe(data => {
 
         let res = JSON.parse(data.data)
@@ -138,7 +138,7 @@ export class UseCaseAComponent implements OnInit, AfterViewInit {
 
 
     this.sseSubscriptionEvent = !this.sseSubscriptionEvent ? this.sseService
-      .getServerSentEvent("http://localhost:4200/API/events")
+      .getServerSentEvent(`http://${environment.sseEventsHost}events`)
       .subscribe(response => {
 
         //TODO vedere cosa viene ricevuto e mandare a NOTIFICATION COMPONENT il mach det it
@@ -249,26 +249,30 @@ export class UseCaseAComponent implements OnInit, AfterViewInit {
 
 
   checkForMovingNextOrder() {
-    let flag = true
+    let showDialogToMove = true
     for (let i = 0; i < this.dataSource.data.length; i++) {
-      // 2: success - 3:failed - 5: error solved
-      if (this.dataSource.data[i].status != "2" || this.dataSource.data[i].status != "3" || this.dataSource.data[i].status != "5") {
-        flag = false;
+      // 2: success - 3:failed - 4: error solved - 5:pending
+      if (this.dataSource.data[i].status != "2" || this.dataSource.data[i].status != "3" || this.dataSource.data[i].status != "4"|| this.dataSource.data[i].status != "5") {
+        showDialogToMove = false;
         break
       }
     }
 
+
+    if(showDialogToMove){
+      const dialogRef = this.dialog.open(MoveNextOrderDialogComponent, {
+        width: '75%',
+        height: '75%'
+      })
+  
+  
+      dialogRef.afterClosed().subscribe(result => {
+        //TODO Se ha detto OK allora aggiorna altrimenti rimani qua
+      })
+  
+    }
     // Chiedi se si vuole andare all'ordine successivo
-    const dialogRef = this.dialog.open(MoveNextOrderDialogComponent, {
-      width: '75%',
-      height: '75%'
-    })
-
-
-    dialogRef.afterClosed().subscribe(result => {
-      //TODO Se ha detto OK allora aggiorna altrimenti rimani qua
-    })
-
+    
 
   }
 

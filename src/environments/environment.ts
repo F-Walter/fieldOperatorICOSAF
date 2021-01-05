@@ -3,8 +3,13 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: false
+  production: false,
+  sseEventsHost : "sseicosaf.cloud.reply.eu",
+  serverHost: "icowms.cloud.reply.eu"
 };
+
+
+
 
 /*
  * For easier debugging in development mode, you can import the following file

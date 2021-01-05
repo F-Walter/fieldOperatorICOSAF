@@ -9,12 +9,15 @@ import { Observable, Subject } from 'rxjs';
 import { retry } from 'rxjs/operators';
 import { Order } from 'src/app/model/order.model';
 
+import {environment} from 'src/environments/environment'
+
 @Injectable({
   providedIn: 'root'
 })
 export class UCCService {
 
 
+  
 
 
 
@@ -62,12 +65,12 @@ export class UCCService {
    * @param agv_id 
    */
   getTaskListAgv<Task>(order_id: Number, agv_id: Number): Observable<Task[]> {
-    let url = `http://icowms.cloud.reply.eu/Details/getTaskListAgv?order_id=${order_id}&agv_id=${agv_id}`
+    let url = `http://${environment.serverHost}/Details/getTaskListAgv?order_id=${order_id}&agv_id=${agv_id}`
     return this.http.get<Task[]>(url).pipe(retry(3))
   }
 
   getTaskListOper<Task>(order_id: Number, oper_id: Number): Observable<Task[]> {
-    let url = `http://icowms.cloud.reply.eu/Details/getTaskListOper?order_id=${order_id}&oper_id=${oper_id}`
+    let url = `http://${environment.serverHost}/Details/getTaskListOper?order_id=${order_id}&oper_id=${oper_id}`
     return this.http.get<Task[]>(url).pipe(retry(3))
   }
 
@@ -76,7 +79,7 @@ export class UCCService {
    * @param order_id 
    */
   getTaskListOrder<Task>(order_id: Number): Observable<Task[]> {
-    let url = `http://icowms.cloud.reply.eu/Details/getTaskListOrder?order_id=${order_id}`
+    let url = `http://${environment.serverHost}/Details/getTaskListOrder?order_id=${order_id}`
     return this.http.get<Task[]>(url).pipe(retry(3))
 
   }
@@ -87,7 +90,7 @@ export class UCCService {
    * @param timestamp: classic timestamp in the form of a string
    */
   getOrdListByDateAndUC<Order>(uc: string, timestamp: string): Observable<Order[]> {
-    let url = `http://icowms.cloud.reply.eu/Details/getOrdListbyDate?ts=${timestamp}&uc=${uc}`
+    let url = `http://${environment.serverHost}/Details/getOrdListbyDate?ts=${timestamp}&uc=${uc}`
     return this.http.get<Order[]>(url).pipe(retry(3))
 
   }
@@ -96,12 +99,12 @@ export class UCCService {
    * @param task_id 
    */
   setTaskStatusOk(task_id: number) {
-    let url = `http://icowms.cloud.reply.eu/Details/updateStatusOK?task_id=${task_id}`
+    let url = `http://${environment.serverHost}/Details/updateStatusOK?task_id=${task_id}`
     return this.http.get<any>(url).pipe(retry(3))
   }
   
   setTaskStatusNotOk(taskId: number,errorTypeId:number) {
-    let url = `http://icowms.cloud.reply.eu/Details/updateStatusEr?task_id=${taskId}&error_type_id=${errorTypeId}`
+    let url = `http://${environment.serverHost}/Details/updateStatusEr?task_id=${taskId}&error_type_id=${errorTypeId}`
     return this.http.get<any>(url).pipe(retry(3))
   }
 
@@ -115,7 +118,7 @@ export class UCCService {
    * @param severity: 1-high, 2-low; if the call to the operator is urgent then 1 otherwise 2
    */
   setSolveAction(solve_action_text: string, operator_ass_id: number, cobot_id: number, solve_act_mast_id: number, error_id: number, severity: number): Observable<any> {
-    let url = `http://icowms.cloud.reply.eu/Details/insertSolveAction?solve_action=${solve_action_text}&operator_ass_id=${operator_ass_id}&cobot_id=${cobot_id}&oper_exec_id=1&solve_act_mast_id=${solve_act_mast_id}&error_id=${error_id}&severity=${severity}`
+    let url = `http://${environment.serverHost}/Details/insertSolveAction?solve_action=${solve_action_text}&operator_ass_id=${operator_ass_id}&cobot_id=${cobot_id}&oper_exec_id=1&solve_act_mast_id=${solve_act_mast_id}&error_id=${error_id}&severity=${severity}`
     return this.http.get<any>(url).pipe(retry(3))
   }
 
@@ -126,7 +129,7 @@ export class UCCService {
    * It returns an array but it can be either empty or with a single object  
    */
   getLastActiveError(task_id: number) {
-    let url = `http://icowms.cloud.reply.eu/Details/getLastActError?task_id=${task_id}`
+    let url = `http://${environment.serverHost}/Details/getLastActError?task_id=${task_id}`
     return this.http.get<any>(url).pipe(retry(3))
 
   }
@@ -139,7 +142,7 @@ export class UCCService {
    * @param task_descr 
    */
   createTaskOper(order_id: number, oper_id: number, agv_id: number, mach_det_id: string, task_descr: string): Observable<any> {
-    let url = `http://icowms.cloud.reply.eu/Details/createTaskOper?order_id=${order_id}&oper_id=${oper_id}&agv_id=${agv_id}&match_det_id=${mach_det_id}task_descr=${task_descr}`
+    let url = `http://${environment.serverHost}/Details/createTaskOper?order_id=${order_id}&oper_id=${oper_id}&agv_id=${agv_id}&match_det_id=${mach_det_id}task_descr=${task_descr}`
     return this.http.get<any>(url).pipe(retry(3))
   }
 
@@ -148,7 +151,7 @@ export class UCCService {
    * @param task_id 
    */
   getTaskDetails(task_id: Number): Observable<any> {
-    let url = `http://icowms.cloud.reply.eu/Details/getTaskDetails?task_id=${task_id}`
+    let url = `http://${environment.serverHost}/Details/getTaskDetails?task_id=${task_id}`
     return this.http.get<any>(url).pipe(retry(3))
   }
   /**
@@ -157,7 +160,7 @@ export class UCCService {
    * @param solve_action_type_id 
    */
   getMappingErAct(error_type_id: number, solve_action_type_id: number) {
-    let url = `http://icowms.cloud.reply.eu/Details/getMappingErAct?error_type_id=${error_type_id}&solve_action_type_id=${solve_action_type_id}`
+    let url = `http://${environment.serverHost}/Details/getMappingErAct?error_type_id=${error_type_id}&solve_action_type_id=${solve_action_type_id}`
     return this.http.get<any>(url).pipe(retry(3))
   }
 }

@@ -18,7 +18,6 @@ export class NotificationFieldOperatorComponent implements OnInit {
   error: boolean
 
 
-  workAreaId: any;
   task_descr: any;
 
 
@@ -30,13 +29,14 @@ export class NotificationFieldOperatorComponent implements OnInit {
     this.error = data.error
 
     if (this.error == true) {
-      this.cobotName = data.cobotName ? data.cobotName : ""
       this.typeofError = data.typeofError ? data.typeofError : ""
       this.severity = data.severity ? data.severity : ""
+
     } else {
       this.task_descr = data.task_descr ? data.task_descr : null
     }
     this.taskId = data.taskId ? data.taskId : null
+    this.cobotName = data.cobotName ? data.cobotName : ""
 
   }
 

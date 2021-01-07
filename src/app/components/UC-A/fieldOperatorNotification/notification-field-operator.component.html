@@ -1,16 +1,22 @@
 <div class="flexCenter">
+    <div class="content">
+        
     <div *ngIf="error; else CheckBlock">
         <p>Tipologia Errore: {{typeofError}}</p>
         <p> Errore riscontrato su cobot: {{cobotName}}</p>
         <p>Urgenza: {{severity}}</p>
     </div>
     <ng-template #CheckBlock>
-    <p>Task Id:  {{taskId}}</p>
-    <p>Work Area: {{workAreaId}}</p>    
+    <h2>Task in esecuzione</h2>
+    <p> Id:  {{taskId}}</p>
+    <p> Description: {{task_descr}}</p>
     </ng-template>
 
-    <button mat-raised-button color="primary" style="margin-right: 40px;" (click)="ok()">OK</button>
-    <button mat-raised-button color="warn" (click)="notOK()">NOT OK</button>
-
+    <div class="buttons">
+        <button mat-raised-button color="primary" style="margin-right: 40px;" (click)="ok()">OK</button>
+        <button mat-raised-button color="warn" (click)="notOK()">NOT OK</button>    
+    </div>
+    
+</div>
 </div>
 

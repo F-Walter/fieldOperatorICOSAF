@@ -1,0 +1,10 @@
+.flexCenter{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+
+}
+.buttons{
+    display: inline;
+    padding: 10px;
+}

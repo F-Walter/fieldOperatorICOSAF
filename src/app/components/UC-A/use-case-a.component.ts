@@ -116,6 +116,7 @@ export class UseCaseAComponent implements OnInit, AfterViewInit {
         if (taskId) {
 
 
+          // There was an error on a task 
           const dialogRef = this.dialog.open(NotificationFieldOperatorComponent, {
             disableClose: true,
             width: '75%',
@@ -159,14 +160,15 @@ export class UseCaseAComponent implements OnInit, AfterViewInit {
       console.log(taskOper)
 
       //Se il task dell'operatore è il successivo rispetto a quello effettuato da AGV
-      // ==> mostro notifica
+      // ==> mostro notifica col task che deve seguire operatore
+      
       if (taskOper.task_id == taskId + 1) {
         const dialogRef = this.dialog.open(NotificationFieldOperatorComponent, {
           disableClose: true,
           width: '75%',
           height: '75%',
           data: {
-            task_descr: data.task_descr,
+            task_descr: taskOper.task_descr,
             taskId: taskOper.task_id,
             error: false
           }
